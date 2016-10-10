@@ -1,0 +1,53 @@
+"Window[platform=ios]":{
+  titleAttributes: {
+      font: {
+          fontFamily: "DroidSans",
+          fontSize: "20dip"
+      }
+  }
+},
+
+"ListItem":{
+    backgroundColor: 'transparent'
+},
+
+'.buttonContent': {
+    width: '55%',
+    height: '45dip',
+    layout: 'composite'
+}
+
+'.buttonIcon': {
+    left: 0,
+    top: '1dip',
+    width: '45dip',
+    height: Ti.UI.FILL,
+    borderColor: Alloy.Globals.colors.black,
+    color: Alloy.Globals.colors.black,
+    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+    font: {
+        fontSize: '22sp',
+        fontFamily: 'icomoon'
+    }
+}
+
+'.button': {
+    right: 0,
+    top: '1dip',
+    height: Ti.UI.FILL,
+    width: Ti.UI.FILL,
+    borderColor: Alloy.Globals.colors.black,
+    color: Alloy.Globals.colors.black,
+    font: {
+        fontSize: '20sp',
+        fontFamily: 'DroidSans'
+    }
+}
+
+'.button[platform=android]': {
+    left: '46dip'
+}
+
+'.button[platform=ios]': {
+    left: '47dip'
+}

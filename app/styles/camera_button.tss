@@ -1,0 +1,15 @@
+'#cameraContent': {
+    height: '55dip',
+    width: '90%',
+    top: '30dip'
+},
+
+'#cameraIcon': {
+    text: Alloy.Globals.icons.camera,
+    backgroundColor: 'transparent'
+},
+
+'#cameraButton': {
+    title: L('camera'),
+    backgroundColor: 'transparent'
+}

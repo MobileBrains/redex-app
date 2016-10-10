@@ -1,0 +1,29 @@
+<h1>jpgcompressor Module</h1>
+<h2>Description</h2>
+<p>Using UIImageJPEGRepresentation to pass the option to compress image passed as TiBlob</p>
+<h2>Accessing the jpgcompressor Module</h2>
+<p>To access this module from JavaScript, you would do the following:</p>
+<pre><code>var jpgcompressor = require("com.sideshowcoder.jpgcompressor");
+</code></pre>
+<h2>Reference</h2>
+<h3>jpgcompressor.setCompressSize</h3>
+<p>Set the compress desired size to calculate UIImageJPEGRepresentation factor via compressSize/imageSize</p>
+<h3>jpgcompressor.compressFactor</h3>
+<p>Read the compress desired size</p>
+<h3>jpgcompressor.compress</h3>
+<p>Pass image as Blob to be compressed</p>
+<h2>Usage</h2>
+<p>jpgcompressor.setCompressFactor(1000);
+  var f = Ti.Filesystem.getFile('test.jpg');
+  var img = f.read.blob;
+  var compressedImg = jpgcompressor.compress(img);</p>
+<h2>Author</h2>
+<p>Philipp Fehre <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#112;&#104;&#105;&#108;&#105;&#112;&#112;&#46;&#102;&#101;&#104;&#114;&#101;&#64;&#103;&#111;&#111;&#103;&#108;&#101;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#112;&#104;&#105;&#108;&#105;&#112;&#112;&#46;&#102;&#101;&#104;&#114;&#101;&#64;&#103;&#111;&#111;&#103;&#108;&#101;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+<a href="http://sideshowcoder.com">Sideshowcoder</a></p>
+<h2>License</h2>
+<p>Copyright (c) 2011, Philipp Fehre
+All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+<p>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
