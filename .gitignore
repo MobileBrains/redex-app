@@ -11,5 +11,5 @@ tmp
 Thumbs.db
 project.sublime-workspace
 app/lib/secrets.js
-i18n
-platform
+i18n/*
+platform/*

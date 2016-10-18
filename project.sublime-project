@@ -1,11 +1,11 @@
 {
-	"folders":
-	[
+    "folders":
+    [
         {
-           "follow_symlinks": true,
-           "path": ".",
-           "name": "Melostomo Titanium App",
-           "folder_exclude_patterns": ["Resources", "build"],
+            "follow_symlinks": true,
+            "path": ".",
+            "name": "Titanium App",
+            "folder_exclude_patterns": ["Resources", "build"],
         }
     ],
     "settings": {
