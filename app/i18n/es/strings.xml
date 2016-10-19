@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string name="app_name">RedexApp</string>
+  <string name="hello">Bienvenido</string>
+  <string name="accept">Aceptar</string>
+  <string name="cancel">Cancelar</string>
+  <string name="camera">Camara</string>
+  <string name="gallery">Galeria</string>
+  <string name="success">Exito</string>
+  <string name="error">Error</string>
+  <string name="uploading">Subiendo...</string>
+  <string name="photo_uploader_take_photo">Tomar una foto con la cámara ó escoger una de la galería</string>
+  <string name="photo_uploader_device_not_have_camera">El dispositivo no tiene cámara.</string>
+  <string name="photo_uploader_error_take">Ocurrió un error tomando la foto. Intenta de nuevo mas tarde.</string>
+  <string name="photo_uploader_error_upload">No fue posible subir la foto. Intenta de nuevo mas tarde.</string>
+  <string name="photo_uploader_success">Imagen subida con exito.</string>
+  <string name="network_lost">No hay conexion a internet.</string>
+</resources>
