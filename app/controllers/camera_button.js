@@ -19,9 +19,9 @@ var clickHandler = (function(_args) {
         })(_args.success);
 
         var onFailure = (function(_callback){
-            return function(){
+            return function(result){
                 if ( _callback ) {
-                    _callback();
+                    _callback(result);
                 }
             };
         })(_args.error);
