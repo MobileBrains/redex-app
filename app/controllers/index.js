@@ -1,3 +1,6 @@
+// try to get a new app access token
+require("oauth").appToken();
+
 require("core").init();
 
 /**
