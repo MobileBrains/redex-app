@@ -1,5 +1,5 @@
 // try to get a new app access token
-require("oauth").appToken();
+require("oauth").appToken({ forceNew: false });
 
 require("core").init();
 
