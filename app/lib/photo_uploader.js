@@ -29,58 +29,40 @@ function generateFile(image) {
 }
 
 function doUpload(options){
-    var buildOnUpload = function(_success, _failure){
+    var buildOnUpload = function(){
         return function(cloudinaryResponse){
-            console.error(cloudinaryResponse);
-            if (cloudinaryResponse.url) {
-                _success(cloudinaryResponse);
+            if (!cloudinaryResponse.error) {
+                require('http').request({
+                    timeout: 10000,
+                    type: 'POST',
+                    format: 'JSON',
+                    oauth_type: 'appToken',
+                    data: {
+                        image_url:  cloudinaryResponse.url
+                    },
+                    url: Alloy.Globals.Secrets.backend.url + "/api/v1/orders/image",
+                    success: function(response) { options.success(response) },
+                    failure: function(response) { options.failure(response) }
+                });
             } else {
-                _failure();
+                options.failure(cloudinaryResponse.error);
             }
         };
     };
 
-    var onUpload = buildOnUpload(options.success, options.failure);
-
-    require("cloudinary").uploader.upload(options.file, onUpload, {
+    require("cloudinary").uploader.upload(options.file, buildOnUpload(), {
         api_key: Alloy.Globals.Secrets.cloudinary.api_key,
         api_secret: Alloy.Globals.Secrets.cloudinary.api_secret
     });
 }
 
-function cloudinaryPhotoUpload(file, callback, failureCallback) {
-    // TODO: enqueue file for uploading
-    // enqueueUploading(file);
-
-    var onSuccess = (function(_file, _callback) {
-        return function(result){
-            // dequeue file from uploading
-            // dequeueUploading(_file);
-
-            if ( _callback ) {
-                _callback(result);
-            }
-        };
-    })(file, callback);
-
-    var onFailure = (function(_callback) {
-        return function(_error) {
-            if ( _callback ) {
-                _callback(_error);
-            }
-        };
-    })(failureCallback);
-
-    doUpload({
-        file: file,
-        success: onSuccess,
-        failure: onFailure
-    });
-}
-
 exports.processPhoto = function(event, callback, failureCallback) {
     var file = generateFile(event);
-    cloudinaryPhotoUpload(file, callback, failureCallback);
+    doUpload({
+        file: file,
+        success: callback,
+        failure: failureCallback
+    });
 };
 
 /**
@@ -128,7 +110,7 @@ exports.takePhoto = function(options) {
 
                         var onFailure = function(result) {
                             if ( options.error ) {
-                                options.error();
+                                options.error(result);
                             }
                         };
 
