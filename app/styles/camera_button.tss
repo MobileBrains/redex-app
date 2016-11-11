@@ -6,10 +6,10 @@
 
 '#cameraIcon': {
     text: Alloy.Globals.icons.camera,
-    backgroundColor: 'transparent'
+    backgroundColor: Alloy.Globals.colors.white
 },
 
 '#cameraButton': {
     title: L('camera'),
-    backgroundColor: 'transparent'
+    backgroundColor: Alloy.Globals.colors.white
 }
