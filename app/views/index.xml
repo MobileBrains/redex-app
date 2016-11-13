@@ -1,9 +1,0 @@
-<Alloy>
-    <!-- Android Window -->
-    <Require id="home" src="home" platform="android" />
-
-    <!-- iOS Window -->
-    <NavigationWindow id="navigationWindow" platform="ios">
-        <Require src="home" />
-    </NavigationWindow>
-</Alloy>

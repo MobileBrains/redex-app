@@ -11,7 +11,7 @@ exports.show = function(customMessage) {
         var background = Titanium.UI.createView({
             height: Ti.UI.FILL,
             width: Ti.UI.FILL,
-            backgroundColor: '#000000',
+            backgroundColor: Alloy.Globals.colors.black,
             opacity: 0.4
         });
 
@@ -21,14 +21,14 @@ exports.show = function(customMessage) {
             height: 150,
             width: 250,
             borderRadius: 10,
-            backgroundColor: '#000000'
+            backgroundColor: Alloy.Globals.colors.black
         });
 
         messageWindow.add(contentPane);
 
         var label = Titanium.UI.createLabel({
             text: customMessage,
-            color: '#ffffff',
+            color: Alloy.Globals.colors.white,
             width: Ti.UI.FILL,
             height: Ti.UI.FILL,
             textAlign: 'center',

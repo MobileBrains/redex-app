@@ -1,8 +1,8 @@
 var dialog = null;
 
 var addCallback = function(_callback) {
-    dialog.addEventListener("click", function onClick(e){
-        dialog.removeEventListener("click", onClick);
+    dialog.addEventListener('click', function onClick(e){
+        dialog.removeEventListener('click', onClick);
 
         if ( _callback ) {
             _callback(e);

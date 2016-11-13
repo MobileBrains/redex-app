@@ -49,14 +49,10 @@ var pxToDP = function (val) {
     }
 };
 
-Alloy.Globals.PLATFORM_WIDTH = Ti.Platform.displayCaps.platformWidth;
-Alloy.Globals.DEVICE_WIDTH = OS_IOS ? Alloy.Globals.PLATFORM_WIDTH : pxToDP(Alloy.Globals.PLATFORM_WIDTH);
-
-Alloy.Globals.icons       = require('icons');
-Alloy.Globals.colors      = require('colors');
 Alloy.Globals.APP         = require('core');
 Alloy.Globals.Secrets     = require('secrets').keys;
-Alloy.Globals.mainWrapper = null;
+Alloy.Globals.icons       = require('icons');
+Alloy.Globals.colors      = require('colors');
 
 Alloy.Globals.LO = Alloy.createWidget('com.caffeinalab.titanium.loader', {
     useImages: false
