@@ -26,7 +26,7 @@ var clickHandler = (function(_args) {
             };
         })(_args.error);
 
-        require("photo_uploader").takePhoto({
+        require('photo_uploader').takePhoto({
             beforeUpload: beforeUpload,
             success:      onSuccess,
             error:        onFailure
@@ -34,4 +34,4 @@ var clickHandler = (function(_args) {
     };
 })(args);
 
-$.cameraContent.addEventListener("click", clickHandler);
+$.cameraContent.addEventListener('click', clickHandler);

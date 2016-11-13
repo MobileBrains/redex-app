@@ -1,17 +1,17 @@
 function generateFile(image) {
     var date        = new Date(),
         time        = Math.round(date.getTime() / 1000),
-        name        = time + "_photo_stream." + image.mimeType.split("/")[1],
+        name        = time + '_photo_stream.' + image.mimeType.split('/')[1],
         dmax        = 640, //desired max in pixels of any one side
         directory   = Ti.Filesystem.applicationDataDirectory,
         file        = Ti.Filesystem.getFile(directory, name);
 
     if (OS_IOS) {
         // get dimensions for scaling
-        var dims = require("scaling_dimensions").calculate(image, dmax);
+        var dims = require('scaling_dimensions').calculate(image, dmax);
 
         // Set and read compress Factor to 100Kb
-        var jpgcompressor = require("com.sideshowcoder.jpgcompressor");
+        var jpgcompressor = require('com.sideshowcoder.jpgcompressor');
         jpgcompressor.setCompressSize(102400);
         jpgcompressor.setWorstCompressQuality(0.70);
 
@@ -20,7 +20,7 @@ function generateFile(image) {
 
         file = Ti.Filesystem.getFile(compressedPath);
     } else {
-        var ImageFactory = require("fh.imagefactory");
+        var ImageFactory = require('fh.imagefactory');
         file.write(image);
         ImageFactory.rotateResizeImage(file.nativePath, dmax, 70);
     }
@@ -40,7 +40,7 @@ function doUpload(options){
                     data: {
                         image_url:  cloudinaryResponse.url
                     },
-                    url: Alloy.Globals.Secrets.backend.url + "/api/v1/orders/image",
+                    url: Alloy.Globals.Secrets.backend.url + '/api/v1/orders/image',
                     success: function(response) { options.success(response) },
                     failure: function(response) { options.failure(response) }
                 });
@@ -50,7 +50,7 @@ function doUpload(options){
         };
     };
 
-    require("cloudinary").uploader.upload(options.file, buildOnUpload(), {
+    require('cloudinary').uploader.upload(options.file, buildOnUpload(), {
         api_key: Alloy.Globals.Secrets.cloudinary.api_key,
         api_secret: Alloy.Globals.Secrets.cloudinary.api_secret
     });
@@ -76,7 +76,7 @@ exports.takePhoto = function(options) {
             options.beforeTake();
         }
 
-        require("dialogs").openOptionsDialog({
+        require('dialogs').openOptionsDialog({
             options: {
                 buttonNames: [L('camera'), L('gallery')],
                 message: L('photo_uploader_take_photo'),
@@ -121,7 +121,7 @@ exports.takePhoto = function(options) {
                         exports.processPhoto(evt.media, afterUploaded, onFailure);
                     },
                     error: function (evt) {
-                        require("dialogs").openDialog({
+                        require('dialogs').openDialog({
                             message: evt.code === Titanium.Media.NO_CAMERA ? L('photo_uploader_device_not_have_camera') : L('photo_uploader_error_take'),
                             title: L('camera')
                         });

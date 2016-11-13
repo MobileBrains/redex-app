@@ -1,15 +1,54 @@
-"Window[platform=ios]":{
-  titleAttributes: {
-      font: {
-          fontFamily: "DroidSans",
-          fontSize: "20dip"
-      }
-  }
-},
+'Window[platform=ios]':{
+    titleAttributes: {
+        font: {
+            fontFamily: 'DroidSans',
+            fontSize: '20dip'
+        }
+    }
+}
 
-"ListItem":{
+'Window[platform=android]':{
+    title: L('app_name'),
+    exitOnClose: true
+}
+
+'Window': {
+    width: Ti.UI.FILL,
+    height: Ti.UI.FILL,
+    backgroundColor: Alloy.Globals.colors.white,
+    orientationModes: [ Titanium.UI.PORTRAIT ], // UI restricted to portrait mode
+}
+
+"#titleView": {
+    height: Ti.UI.SIZE,
+    width: Ti.UI.SIZE,
+    layout: 'horizontal'
+}
+
+"#titleLabel": {
+    text: L('app_name'),
+    color: Alloy.Globals.colors.black,
+    width: Ti.UI.SIZE,
+    height: Ti.UI.SIZE,
+    font: {
+        fontSize: "18dip",
+        fontFamily: "DroidSans"
+    }
+}
+
+'ListItem':{
     backgroundColor: 'transparent'
-},
+}
+
+'ScrollView': {
+    height: Ti.UI.FILL,
+    width: Ti.UI.FILL,
+    contentWidth: Ti.UI.FILL,
+    contentHeight: Ti.UI.FILL,
+    showVerticalScrollIndicator: false,
+    showHorizontalScrollIndicator: false,
+    zIndex: 1
+}
 
 '.buttonContent': {
     width: '55%',
