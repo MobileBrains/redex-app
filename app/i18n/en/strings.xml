@@ -8,11 +8,17 @@
   <string name="gallery">Gallery</string>
   <string name="success">Success</string>
   <string name="error">Error</string>
-	<string name="uploading">Uploading...</string>
+  <string name="send">Send</string>
+  <string name="email">Email</string>
+  <string name="pass">Password</string>
+  <string name="uploading">Uploading...</string>
+  <string name="loader_default">Loading...</string>
   <string name="photo_uploader_take_photo">Select a photo from camera or gallery.</string>
   <string name="photo_uploader_device_not_have_camera">Devise hasn't a camera.</string>
   <string name="photo_uploader_error_take">Error taking photo. Try again later.</string>s
   <string name="photo_uploader_error_upload">Error uploading photo. Try again later.</string>
   <string name="photo_uploader_success">Image uploaded successful.</string>
   <string name="network_lost">Check your network connection.</string>
+  <string name="empty_email">Enter your email.</string>
+  <string name="empty_pass">Enter your password.</string>
 </resources>

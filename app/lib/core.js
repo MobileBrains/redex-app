@@ -138,13 +138,13 @@ var APP = {
         var params = args && args.params ? args.params : {};
         var navigationWindow = args && args.navigationWindow == false ? false : true;
 
-        Ti.API.debug(String.format('APP.navigator.open -> controller: %s with navigationWindow %s and params: %s', controller, navigationWindow, JSON.stringify(params)));
+        Ti.API.debug(String.format('APP.navigator.open -> controller: %s with navigationWindow %s and params: %s', controller, navigationWindow.toString(), JSON.stringify(params)));
 
         var win = Alloy.createController(controller, params).getView();
 
         if (OS_IOS && navigationWindow) {
-            APP.navWindow.openWindow(win);
             APP.navWindow.open();
+            APP.navWindow.openWindow(win);
         } else {
             win.open();
         }

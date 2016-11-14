@@ -1,3 +1,9 @@
 <Alloy>
-    <Window id="HomeWindow"/>
+    <Window id="HomeWindow">
+        <TitleControl platform="ios">
+            <View id="titleView">
+                <Label id="titleLabel"/>
+            </View>
+        </TitleControl>
+    </Window>
 </Alloy>

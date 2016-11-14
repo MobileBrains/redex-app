@@ -35,3 +35,35 @@ exports.appToken = function(args) {
         }
     });
 };
+
+exports.validateToken = function(args){
+    var userAccessToken =  Ti.App.Properties.getString('user_access_token', null);
+    if (require('session').isLogged() && userAccessToken !== null) {
+        require('http').request({
+            timeout: 10000,
+            type: 'POST',
+            format: 'JSON',
+            oauth_type: 'appToken',
+            url: baseUrl + '/api/v1/sessions/validate_token',
+            data: {
+                token: userAccessToken
+            },
+            success: function(response) {
+                if (response.success === true) {
+                    args.success();
+                } else {
+                    require('session').logout({
+                        success: function(){
+                            args.error(true);
+                        },
+                        error: function(){}
+                    });
+                }
+            },failure: function(){
+                args.error();
+            }
+        });
+    } else {
+        args.error();
+    }
+};
