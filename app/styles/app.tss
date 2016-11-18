@@ -15,24 +15,25 @@
 'Window': {
     width: Ti.UI.FILL,
     height: Ti.UI.FILL,
-    backgroundColor: Alloy.Globals.colors.white,
+    backgroundColor: 'transparent'
+    backgroundImage: '/images/background.png',
     orientationModes: [ Titanium.UI.PORTRAIT ], // UI restricted to portrait mode
 }
 
-"#titleView": {
+'#titleView': {
     height: Ti.UI.SIZE,
     width: Ti.UI.SIZE,
     layout: 'horizontal'
 }
 
-"#titleLabel": {
+'#titleLabel': {
     text: L('app_name'),
     color: Alloy.Globals.colors.black,
     width: Ti.UI.SIZE,
     height: Ti.UI.SIZE,
     font: {
-        fontSize: "18dip",
-        fontFamily: "DroidSans"
+        fontSize: '18dip',
+        fontFamily: 'DroidSans'
     }
 }
 
