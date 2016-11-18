@@ -1,31 +1,14 @@
 // try to get a new app access token
-require("oauth").appToken({ forceNew: false });
+require('oauth').appToken({ forceNew: false });
 
-require("core").init();
+Alloy.Globals.APP.init();
 
-/**
- * Global Navigation Handler
- */
-Alloy.Globals.Navigator = {
-
-    /**
-     * Handle to the Navigation Controller
-     */
-    navGroup: $.navigationWindow,
-
-    open: function(controller, payload){
-        var win = Alloy.createController(controller, payload || {}).getView();
-
-        if( OS_IOS ) {
-            this.navGroup.openWindow(win);
-        } else {
-            win.open();
-        }
+// redirect based on login
+require('oauth').validateToken({
+    success: function() {
+        Alloy.Globals.APP.navigatorOpen('home');
+    },
+    error: function(){
+        Alloy.Globals.APP.navigatorOpen('login', { navigationWindow: false });
     }
-};
-
-if (OS_IOS) {
-    $.navigationWindow.open();
-} else if ( OS_ANDROID ) {
-    $.home.getView().open();
-}
+});
