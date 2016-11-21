@@ -15,9 +15,9 @@
 'Window': {
     width: Ti.UI.FILL,
     height: Ti.UI.FILL,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
     backgroundImage: '/images/background.png',
-    orientationModes: [ Titanium.UI.PORTRAIT ], // UI restricted to portrait mode
+    orientationModes: [ Titanium.UI.PORTRAIT ] // UI restricted to portrait mode
 }
 
 '#titleView': {
@@ -50,81 +50,3 @@
     showHorizontalScrollIndicator: false,
     zIndex: 1
 }
-
-'.buttonContent': {
-    width: '55%',
-    height: '45dip',
-    layout: 'composite'
-}
-
-'.buttonIcon': {
-    left: 0,
-    top: '1dip',
-    width: '45dip',
-    height: Ti.UI.FILL,
-    borderColor: Alloy.Globals.colors.black,
-    color: Alloy.Globals.colors.black,
-    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-    font: {
-        fontSize: '22sp',
-        fontFamily: 'icomoon'
-    }
-}
-
-'.button': {
-    right: 0,
-    top: '1dip',
-    height: Ti.UI.FILL,
-    width: Ti.UI.FILL,
-    borderColor: Alloy.Globals.colors.black,
-    color: Alloy.Globals.colors.black,
-    font: {
-        fontSize: '20sp',
-        fontFamily: 'DroidSans'
-    }
-}
-
-'.button[platform=android]': {
-    left: '46dip'
-}
-
-'.button[platform=ios]': {
-    left: '47dip'
-}
-
-'.field': {
-    top: '10dip',
-    layout: 'composite',
-    width: '90%',
-    height: '40dip',
-    borderColor: Alloy.Globals.colors.black,
-    borderWidth: '1dip',
-    backgroundColor: Alloy.Globals.colors.white
-}
-
-'.fieldIcon': {
-    left: 0,
-    width: '40dip',
-    height: '40dip',
-    backgroundColor: Alloy.Globals.colors.black,
-    color: Alloy.Globals.colors.white,
-    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-    font: {
-        fontSize: '18dip',
-        fontFamily: 'icomoon'
-    }
-}
-
-'.fieldText': {
-    left: '45dip',
-    width: Ti.UI.FILL,
-    height: '40dip',
-    backgroundColor: Alloy.Globals.colors.white,
-    color: Alloy.Globals.colors.black,
-    returnKeyType: Ti.UI.RETURNKEY_DONE,
-    hintTextColor: Alloy.Globals.colors.black,
-    font: {
-        fontSize: '17dip',
-        fontFamily: 'DroidSans'
-    }
-},

@@ -67,3 +67,14 @@ exports.validateToken = function(args){
         args.error();
     }
 };
+
+exports.userToken = function(args) {
+    var userAccessToken =  Ti.App.Properties.getString('user_access_token', null);
+
+    if ( userAccessToken !== null ) {
+        if (args.callback) {
+            args.callback(userAccessToken);
+        }
+        return;
+    }
+};

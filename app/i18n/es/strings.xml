@@ -21,4 +21,5 @@
   <string name="network_lost">No hay conexion a internet.</string>
   <string name="empty_email">Ingresa tu correo electrónico.</string>
   <string name="empty_pass">Ingresa tu contraseña.</string>
+  <string name="delivery_orders_empty">No se encontraron ordenes de entrega para el usuario actual.</string>
 </resources>

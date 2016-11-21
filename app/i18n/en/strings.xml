@@ -21,4 +21,5 @@
   <string name="network_lost">Check your network connection.</string>
   <string name="empty_email">Enter your email.</string>
   <string name="empty_pass">Enter your password.</string>
+  <string name="delivery_orders_empty">No delivery orders were found for the current user.</string>
 </resources>

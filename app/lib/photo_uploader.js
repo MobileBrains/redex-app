@@ -32,18 +32,7 @@ function doUpload(options){
     var buildOnUpload = function(){
         return function(cloudinaryResponse){
             if (!cloudinaryResponse.error) {
-                require('http').request({
-                    timeout: 10000,
-                    type: 'POST',
-                    format: 'JSON',
-                    oauth_type: 'appToken',
-                    data: {
-                        image_url:  cloudinaryResponse.url
-                    },
-                    url: Alloy.Globals.Secrets.backend.url + '/api/v1/orders/image',
-                    success: function(response) { options.success(response) },
-                    failure: function(response) { options.failure(response) }
-                });
+                options.success(cloudinaryResponse);
             } else {
                 options.failure(cloudinaryResponse.error);
             }
