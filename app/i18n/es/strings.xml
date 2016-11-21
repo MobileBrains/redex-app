@@ -8,11 +8,18 @@
   <string name="gallery">Galeria</string>
   <string name="success">Exito</string>
   <string name="error">Error</string>
+  <string name="send">Enviar</string>
+  <string name="email">Correo Electrónico</string>
+  <string name="pass">Contraseña</string>
   <string name="uploading">Subiendo...</string>
+  <string name="loader_default">Cargando...</string>
   <string name="photo_uploader_take_photo">Tomar una foto con la cámara ó escoger una de la galería</string>
   <string name="photo_uploader_device_not_have_camera">El dispositivo no tiene cámara.</string>
   <string name="photo_uploader_error_take">Ocurrió un error tomando la foto. Intenta de nuevo mas tarde.</string>
   <string name="photo_uploader_error_upload">No fue posible subir la foto. Intenta de nuevo mas tarde.</string>
   <string name="photo_uploader_success">Imagen subida con exito.</string>
   <string name="network_lost">No hay conexion a internet.</string>
+  <string name="empty_email">Ingresa tu correo electrónico.</string>
+  <string name="empty_pass">Ingresa tu contraseña.</string>
+  <string name="delivery_orders_empty">No se encontraron ordenes de entrega para el usuario actual.</string>
 </resources>

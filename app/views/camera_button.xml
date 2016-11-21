@@ -1,6 +1,0 @@
-<Alloy>
-    <View id="cameraContent" class="buttonContent">
-        <Label id="cameraIcon" class="buttonIcon"/>
-        <Button id="cameraButton" class="button"/>
-    </View>
-</Alloy>

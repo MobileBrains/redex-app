@@ -1,0 +1,76 @@
+'#listView': {
+    width: Ti.UI.FILL,
+    height: Ti.UI.FILL,
+    visible: false
+},
+
+'#order': {
+    left: '0dip',
+    width: Ti.UI.FILL,
+    layout: 'horizontal'
+},
+
+'#left':{
+    left: '0dip',
+    width: '80%',
+    height: Ti.UI.FILL,
+    layout: 'vertical'
+},
+
+'#order_internal_guide': {
+    top: '8dip',
+    left: '20dip',
+    color: Alloy.Globals.colors.white,
+    font: {
+        fontSize: '15dip',
+        fontFamily: 'DroidSans'
+    }
+},
+
+'#order_destinatary': {
+    top: '4dip',
+    left: '20dip',
+    color: Alloy.Globals.colors.white,
+    font: {
+        fontSize: '12dip',
+        fontFamily: 'DroidSans'
+    }
+},
+
+'#order_adderss': {
+    top: '4dip',
+    left: '20dip',
+    color: Alloy.Globals.colors.white,
+    font: {
+        fontSize: '12dip',
+        fontFamily: 'DroidSans'
+    }
+},
+
+'#right':{
+    left: '0dip',
+    width: '20%',
+    height: Ti.UI.SIZE,
+    layout: 'horizontal'
+},
+
+'#camera_icon': {
+    left: '10dip',
+    width: Ti.UI.SIZE,
+    height: Ti.UI.SIZE,
+    color: Alloy.Globals.colors.white,
+    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+    text: Alloy.Globals.icons.camera,
+    font: {
+        fontSize: '27sp',
+        fontFamily: 'icomoon'
+    }
+},
+
+'#order_state': {
+    left: '10dip',
+    bottom: '5dip',
+    width: '23dip',
+    height: '23dip',
+    borderRadius: '15dip'
+}

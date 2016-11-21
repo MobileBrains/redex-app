@@ -5,5 +5,23 @@
                 <Label id="titleLabel"/>
             </View>
         </TitleControl>
+        <ListView id="listView" defaultItemTemplate="default">
+            <Templates>
+                <ItemTemplate name="default">
+                    <View id="order">
+                        <View id="left">
+                            <Label id="order_internal_guide" bindId="order_internal_guide"/>
+                            <Label id="order_destinatary" bindId="order_destinatary"/>
+                            <Label id="order_adderss" bindId="order_adderss"/>
+                        </View>
+                        <View id="right" bindId="right">
+                            <Label id="camera_icon" bindId="camera_icon"/>
+                            <Label id="order_state" bindId="order_state"/>
+                        </View>
+                    </View>
+                </ItemTemplate>
+            </Templates>
+            <ListSection id="listSection"/>
+        </ListView>
     </Window>
 </Alloy>
