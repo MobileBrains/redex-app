@@ -21,7 +21,7 @@ require('http').request({
                     order_internal_guide : { text: 'Guia Interna: ' + order.internal_guide },
                     order_destinatary    : { text: order.destinatary },
                     order_adderss        : { text: order.adderss },
-                    order_state          : { backgroundColor: order.state === 0 ? Alloy.Globals.colors.soft_red : Alloy.Globals.colors.soft_green },
+                    order_state          : { backgroundColor: order.state === 'pendiente' ? Alloy.Globals.colors.soft_red : Alloy.Globals.colors.soft_green },
                     properties: {
                         touchEnabled     : false,
                         accessoryType    : Ti.UI.LIST_ACCESSORY_TYPE_NONE,
