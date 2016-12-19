@@ -1,15 +1,15 @@
 function openCamera(mediaOptions) {
-    if (Ti.Media.hasCameraPermissions) {
-        alert("Yes has camera permission");
+    var hasCameraPermissions = Ti.Media.hasCameraPermissions();
+    if (hasCameraPermissions === true) {
+        console.error("Yes has camera permission");
         Ti.Media.showCamera(mediaOptions);
     } else {
-        alert("No camera permission. Asking for Permission");
+        console.error("No camera permission. Asking for Permission");
         Ti.Media.requestCameraPermissions(function(e) {
-            alert(JSON.stringify(e));
             if (e.success === true) {
                 openCamera(mediaOptions);
             } else {
-                alert("Access denied, error: " + e.error);
+                alert("Access denied. No camera permission.");
             }
         });
     }
