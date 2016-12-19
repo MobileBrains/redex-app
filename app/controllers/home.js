@@ -1,3 +1,38 @@
+if ( OS_ANDROID ) {
+    require('android_actionbar').build({
+        window: $.HomeWindow,
+        displayHomeAsUp: false,
+        menuItems: [{
+            id: 101,
+            title: L('logout'),
+            icon: Alloy.Globals.icons.user,
+            callback: function(){
+                require('dialogs').openOptionsDialog({
+                    options: {
+                        buttonNames: [L('accept')],
+                        message: L('logout_confirmation'),
+                        title: L('app_name')
+                    },
+                    callback: function(evt){
+                        if (evt.index !== evt.source.cancel) {
+                            Alloy.Globals.LO.show(L('loader_default'), false);
+                            require('session').logout({
+                                success: function(){
+                                    Alloy.Globals.LO.hide();
+                                    Alloy.Globals.APP.navigatorOpen('login', { navigationWindow: false });
+                                },
+                                error: function(){
+                                    Alloy.Globals.LO.hide();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }]
+    });
+}
+
 Alloy.Globals.LO.show(L('loader_default'), false);
 require('http').request({
     timeout: 10000,

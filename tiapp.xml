@@ -67,6 +67,7 @@
   <modules>
     <module platform="iphone" version="0.5.3">com.sideshowcoder.jpgcompressor</module>
     <module platform="android" version="2.0">fh.imagefactory</module>
+    <module platform="android" version="1.7.1">com.alcoapps.actionbarextras</module>
   </modules>
   <deployment-targets>
     <target device="android">true</target>
