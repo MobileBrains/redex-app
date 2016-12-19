@@ -64,12 +64,18 @@ $.listView.addEventListener('itemclick', function(evt) {
                     },
                     url: Alloy.Globals.Secrets.backend.url + '/api/v1/delivery_orders/image',
                     success: function(response) {
+                        item.order_state.backgroundColor = Alloy.Globals.colors.soft_green;
+                        evt.section.updateItemAt(evt.itemIndex, item);
+
                         require('dialogs').openDialog({
                             message: L('photo_uploader_success'),
                             title: L('success')
                         });
                     },
                     failure: function(response) {
+                        item.order_state.backgroundColor = Alloy.Globals.colors.soft_red;
+                        evt.section.updateItemAt(evt.itemIndex, item);
+
                         require('dialogs').openDialog({
                             message: L('photo_uploader_error_upload'),
                             title: L('error')
