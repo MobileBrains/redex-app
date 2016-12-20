@@ -5,7 +5,7 @@ if ( OS_ANDROID ) {
         menuItems: [{
             id: 101,
             title: L('logout'),
-            icon: Alloy.Globals.icons.user,
+            icon: 'images/user_white.png',
             callback: function(){
                 require('dialogs').openOptionsDialog({
                     options: {
