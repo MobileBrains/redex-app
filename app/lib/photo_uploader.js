@@ -1,3 +1,20 @@
+function openCamera(mediaOptions) {
+    var hasCameraPermissions = Ti.Media.hasCameraPermissions();
+    if (hasCameraPermissions === true) {
+        console.error("Yes has camera permission");
+        Ti.Media.showCamera(mediaOptions);
+    } else {
+        console.error("No camera permission. Asking for Permission");
+        Ti.Media.requestCameraPermissions(function(e) {
+            if (e.success === true) {
+                openCamera(mediaOptions);
+            } else {
+                alert("Access denied. No camera permission.");
+            }
+        });
+    }
+};
+
 function generateFile(image) {
     var date        = new Date(),
         time        = Math.round(date.getTime() / 1000),
@@ -81,6 +98,10 @@ exports.takePhoto = function(options) {
 
                 var mediaOptions = {
                     mediaTypes: [Ti.Media.MEDIA_TYPE_PHOTO],
+                    animated : true,
+                    autoHide : true,
+                    allowEditing : true,
+                    showControls : true,
                     success: function (evt) {
 
                         var afterUploaded = function(result) {
@@ -128,7 +149,7 @@ exports.takePhoto = function(options) {
 
                 if ( e.index === (OS_IOS ? 1 : 0)) { // Camera was selected
                     mediaOptions.saveToPhotoGallery = true;
-                    Ti.Media.showCamera(mediaOptions);
+                    openCamera(mediaOptions);
                 } else if ( e.index === (OS_IOS ? 2 : 1)) {
                     Ti.Media.openPhotoGallery(mediaOptions);
                 }

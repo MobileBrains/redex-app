@@ -22,4 +22,6 @@
   <string name="empty_email">Enter your email.</string>
   <string name="empty_pass">Enter your password.</string>
   <string name="delivery_orders_empty">No delivery orders were found for the current user.</string>
+  <string name="logout">Logout</string>
+  <string name="logout_confirmation">Are you sure you want to logout?</string>
 </resources>

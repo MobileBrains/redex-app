@@ -1,3 +1,38 @@
+if ( OS_ANDROID ) {
+    require('android_actionbar').build({
+        window: $.HomeWindow,
+        displayHomeAsUp: false,
+        menuItems: [{
+            id: 101,
+            title: L('logout'),
+            icon: 'images/logout.png',
+            callback: function(){
+                require('dialogs').openOptionsDialog({
+                    options: {
+                        buttonNames: [L('accept')],
+                        message: L('logout_confirmation'),
+                        title: L('app_name')
+                    },
+                    callback: function(evt){
+                        if (evt.index !== evt.source.cancel) {
+                            Alloy.Globals.LO.show(L('loader_default'), false);
+                            require('session').logout({
+                                success: function(){
+                                    Alloy.Globals.LO.hide();
+                                    Alloy.Globals.APP.navigatorOpen('login', { navigationWindow: false });
+                                },
+                                error: function(){
+                                    Alloy.Globals.LO.hide();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }]
+    });
+}
+
 Alloy.Globals.LO.show(L('loader_default'), false);
 require('http').request({
     timeout: 10000,
@@ -21,7 +56,7 @@ require('http').request({
                     order_internal_guide : { text: 'Guia Interna: ' + order.internal_guide },
                     order_destinatary    : { text: order.destinatary },
                     order_adderss        : { text: order.adderss },
-                    order_state          : { backgroundColor: order.state === 0 ? Alloy.Globals.colors.soft_red : Alloy.Globals.colors.soft_green },
+                    order_state          : { backgroundColor: order.state === 'pendiente' ? Alloy.Globals.colors.soft_red : Alloy.Globals.colors.soft_green },
                     properties: {
                         touchEnabled     : false,
                         accessoryType    : Ti.UI.LIST_ACCESSORY_TYPE_NONE,
@@ -64,12 +99,18 @@ $.listView.addEventListener('itemclick', function(evt) {
                     },
                     url: Alloy.Globals.Secrets.backend.url + '/api/v1/delivery_orders/image',
                     success: function(response) {
+                        item.order_state.backgroundColor = Alloy.Globals.colors.soft_green;
+                        evt.section.updateItemAt(evt.itemIndex, item);
+
                         require('dialogs').openDialog({
                             message: L('photo_uploader_success'),
                             title: L('success')
                         });
                     },
                     failure: function(response) {
+                        item.order_state.backgroundColor = Alloy.Globals.colors.soft_red;
+                        evt.section.updateItemAt(evt.itemIndex, item);
+
                         require('dialogs').openDialog({
                             message: L('photo_uploader_error_upload'),
                             title: L('error')
