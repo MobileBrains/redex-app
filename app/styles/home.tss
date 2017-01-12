@@ -48,28 +48,13 @@
 },
 
 '#right':{
-    left: '0dip',
     width: '20%',
     height: Ti.UI.SIZE,
     layout: 'horizontal'
 },
 
-'#camera_icon': {
-    left: '10dip',
-    width: Ti.UI.SIZE,
-    height: Ti.UI.SIZE,
-    color: Alloy.Globals.colors.white,
-    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-    text: Alloy.Globals.icons.camera,
-    font: {
-        fontSize: '27sp',
-        fontFamily: 'icomoon'
-    }
-},
-
 '#order_state': {
-    left: '10dip',
-    bottom: '5dip',
+    left: '20dip',
     width: '23dip',
     height: '23dip',
     borderRadius: '15dip'

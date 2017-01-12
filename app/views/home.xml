@@ -14,8 +14,7 @@
                             <Label id="order_destinatary" bindId="order_destinatary"/>
                             <Label id="order_adderss" bindId="order_adderss"/>
                         </View>
-                        <View id="right" bindId="right">
-                            <Label id="camera_icon" bindId="camera_icon"/>
+                        <View id="right">
                             <Label id="order_state" bindId="order_state"/>
                         </View>
                     </View>

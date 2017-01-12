@@ -73,14 +73,8 @@ require('http').request({
     }
 });
 
-$.listView.addEventListener('itemclick', function(evt) {
-    var item = evt.section.getItemAt(evt.itemIndex);
-    var bindId = evt.bindId;
-    console.error('bindId: ', bindId);
-    console.error('Tab in: ', item.raw_data);
-
-    if (bindId === 'right' || bindId === 'camera_icon' || bindId === 'order_state') {
-        require('photo_uploader').takePhoto({
+var managePhoto = function(item){
+    require('photo_uploader').takePhoto({
             beforeUpload: function(){
                 Alloy.Globals.LO.show(L('uploading'), false);
             },
@@ -127,5 +121,28 @@ $.listView.addEventListener('itemclick', function(evt) {
                 });
             }
         })();
-    }
+};
+
+$.listView.addEventListener('itemclick', function(evt) {
+    var item = evt.section.getItemAt(evt.itemIndex);
+    var bindId = evt.bindId;
+    console.error('bindId: ', bindId);
+    console.error('Tab in: ', item.raw_data);
+
+    require('dialogs').openOptionsDialog({
+        options: {
+            buttonNames: ['Entregar', 'Foto', 'Devolucion'],
+            message: 'Seleccione una opcion',
+            title: L('app_name')
+        },
+        callback: function(evt){
+            if (evt.index === 0) {
+                alert('Entregar');
+            } else if(evt.index === 1) {
+                managePhoto(item);
+            } else if(evt.index === 2) {
+                alert('Devolucion')
+            }
+        }
+    });
 });
