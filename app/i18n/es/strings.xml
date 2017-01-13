@@ -11,8 +11,12 @@
   <string name="send">Enviar</string>
   <string name="email">Correo Electrónico</string>
   <string name="pass">Contraseña</string>
+  <string name="deliver">Entregar</string>
+  <string name="photo">Foto</string>
+  <string name="devolution">Devolución</string>
   <string name="uploading">Subiendo...</string>
   <string name="loader_default">Cargando...</string>
+  <string name="dialog_default">Seleccione una opción</string>
   <string name="photo_uploader_take_photo">Tomar una foto con la cámara ó escoger una de la galería</string>
   <string name="photo_uploader_device_not_have_camera">El dispositivo no tiene cámara.</string>
   <string name="photo_uploader_error_take">Ocurrió un error tomando la foto. Intenta de nuevo mas tarde.</string>
