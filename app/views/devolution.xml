@@ -1,0 +1,13 @@
+<Alloy>
+    <Window id="DevolutionWindow">
+        <ScrollView id="MainWrapper">
+            <View class="fields">
+                <Picker id="devolutionReasonPicker" platform="android">
+                    <PickerColumn id="devolutionReasonColumn"/>
+                </Picker>
+                <TextArea id="devolutionObservation"/>
+                <Button class="button" id="send"/>
+            </View>
+        </ScrollView>
+    </Window>
+</Alloy>

@@ -171,8 +171,8 @@ var managePhoto = function(args){
     })();
 };
 
-var manageDevolution = function(){
-    alert(L('devolution'));
+var manageDevolution = function(internal_guide){
+    Alloy.Globals.APP.navigatorOpen('devolution', { navigationWindow: false, params: { internal_guide: internal_guide }});
 };
 
 $.listView.addEventListener('itemclick', function(evt) {
@@ -180,7 +180,8 @@ $.listView.addEventListener('itemclick', function(evt) {
     var bindId = evt.bindId;
     var section = evt.section;
     var itemIndex = evt.itemIndex;
-    console.error('Tab in: ', item.raw_data);
+
+    Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
 
     if (item.raw_data.state !== 'entregada') {
         require('dialogs').openOptionsDialog({
@@ -204,7 +205,7 @@ $.listView.addEventListener('itemclick', function(evt) {
                        }
                     });
                 } else if(evt.index === 1) {
-                    manageDevolution();
+                    manageDevolution(item.raw_data.internal_guide);
                 }
             }
         });
@@ -215,11 +216,24 @@ $.listView.addEventListener('itemclick', function(evt) {
             state: item.raw_data.state,
             callback: function(response){
                 if (response === true) {
-                    item.raw_data.state = 'entregada'
+                    item.raw_data.state = 'entregada';
                 }
                 item.order_state.backgroundColor = getStateColor(item.raw_data.state);
                 section.updateItemAt(itemIndex, item);
             }
         });
+    }
+});
+
+$.HomeWindow.addEventListener('focus', function(){
+    var current_devolution_item_index = Ti.App.Properties.getObject('current_devolution_item_index', null);
+    if (current_devolution_item_index !== null) {
+        var item = $.listSection.getItemAt(current_devolution_item_index);
+        if(item !== null) {
+            item.raw_data.state = 'devolucion';
+            item.order_state.backgroundColor = getStateColor(item.raw_data.state);
+            $.listSection.updateItemAt(current_devolution_item_index, item);
+            Ti.App.Properties.removeProperty('current_devolution_item_index');
+        }
     }
 });
