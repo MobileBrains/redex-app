@@ -35,6 +35,8 @@ _.each(reasons, function(reason) {
     $.devolutionReasonColumn.addRow(row);
 });
 
+console.error("params:    ", params);
+
 $.send.addEventListener('click', function() {
     if (devolutionReasonNumber !== -1 && devolutionReasonNumber !== null && devolutionReasonNumber !== undefined) {
         var observation = $.devolutionObservation.getValue();
@@ -48,7 +50,8 @@ $.send.addEventListener('click', function() {
             data: {
                 devolution_reason: devolutionReasonNumber,
                 observation: observation,
-                delivery_order_internal_guide: params.internal_guide
+                delivery_order_internal_guide: params.internal_guide,
+                image_url: params.image_url
             },
             success: function(response) {
                 Alloy.Globals.LO.hide();

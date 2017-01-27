@@ -28,4 +28,5 @@
   <string name="delivery_orders_empty">No delivery orders were found for the current user.</string>
   <string name="logout">Logout</string>
   <string name="logout_confirmation">Are you sure you want to logout?</string>
+  <string name="already_in_devolution">This order is already in devolution state</string>
 </resources>
