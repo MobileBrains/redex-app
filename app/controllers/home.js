@@ -116,13 +116,15 @@ var manageDeliver = function(args){
 var managePhoto = function(args){
     require('photo_uploader').takePhoto({
         cancel: function(){
-            if (args.state !== 'entregada') {
+            if (args.next_state === 'entregada') {
                 manageDeliver({
                     internal_guide: args.internal_guide,
                     callback: function(response){
                         args.callback(response);
                     }
                 });
+            } else if (args.next_state === 'devolucion') {
+                args.callback(false)
             }
         },
         beforeUpload: function(){
@@ -132,32 +134,36 @@ var managePhoto = function(args){
             Alloy.Globals.LO.hide();
             Ti.API.debug('success cloudinaryResponse: ', JSON.stringify(cloudinaryResponse));
 
-            require('http').request({
-                timeout: 10000,
-                type: 'POST',
-                format: 'JSON',
-                oauth_type: 'appToken',
-                data: {
-                    image_url: cloudinaryResponse.url,
-                    delivery_order_id: args.order_id
-                },
-                url: Alloy.Globals.Secrets.backend.url + '/api/v1/delivery_orders/image',
-                success: function(response) {
-                    require('dialogs').openDialog({
-                        message: L('photo_uploader_success'),
-                        title: L('success')
-                    });
+            if (args.next_state === 'entregada') {
+                require('http').request({
+                    timeout: 10000,
+                    type: 'POST',
+                    format: 'JSON',
+                    oauth_type: 'appToken',
+                    data: {
+                        image_url: cloudinaryResponse.url,
+                        delivery_order_id: args.order_id
+                    },
+                    url: Alloy.Globals.Secrets.backend.url + '/api/v1/delivery_orders/image',
+                    success: function(response) {
+                        require('dialogs').openDialog({
+                            message: L('photo_uploader_success'),
+                            title: L('success')
+                        });
 
-                    args.callback(true);
-                },
-                failure: function(response) {
-                    require('dialogs').openDialog({
-                        message: L('photo_uploader_error_upload'),
-                        title: L('error')
-                    });
-                    args.callback(false);
-                }
-            });
+                        args.callback(true);
+                    },
+                    failure: function(response) {
+                        require('dialogs').openDialog({
+                            message: L('photo_uploader_error_upload'),
+                            title: L('error')
+                        });
+                        args.callback(false);
+                    }
+                });
+            } else if (args.next_state === 'devolucion') {
+                args.callback(cloudinaryResponse.url);
+            }
         },
         error: function(response){
             Alloy.Globals.LO.hide();
@@ -171,8 +177,8 @@ var managePhoto = function(args){
     })();
 };
 
-var manageDevolution = function(internal_guide){
-    Alloy.Globals.APP.navigatorOpen('devolution', { navigationWindow: false, params: { internal_guide: internal_guide }});
+var manageDevolution = function(args){
+    Alloy.Globals.APP.navigatorOpen('devolution', { navigationWindow: false, params: args });
 };
 
 $.listView.addEventListener('itemclick', function(evt) {
@@ -181,9 +187,7 @@ $.listView.addEventListener('itemclick', function(evt) {
     var section = evt.section;
     var itemIndex = evt.itemIndex;
 
-    Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
-
-    if (item.raw_data.state !== 'entregada') {
+    if (item.raw_data.state === 'pendiente') {
         require('dialogs').openOptionsDialog({
             options: {
                 buttonNames: [L('deliver'), L('devolution')],
@@ -195,25 +199,36 @@ $.listView.addEventListener('itemclick', function(evt) {
                     managePhoto({
                         order_id: item.raw_data.id,
                         internal_guide: item.raw_data.internal_guide,
-                        state: item.raw_data.state,
+                        next_state: 'entregada',
                         callback: function(response){
                             if (response === true) {
-                                item.raw_data.state = 'entregada'
+                                item.raw_data.state = 'entregada';
                             }
                             item.order_state.backgroundColor = getStateColor(item.raw_data.state);
                             section.updateItemAt(itemIndex, item);
-                       }
+                        }
                     });
                 } else if(evt.index === 1) {
-                    manageDevolution(item.raw_data.internal_guide);
+                    managePhoto({
+                        order_id: item.raw_data.id,
+                        internal_guide: item.raw_data.internal_guide,
+                        next_state: 'devolucion',
+                        callback: function(response){
+                            image = (response !== true && response !== false) ? response : null
+                            Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
+                            manageDevolution({ internal_guide: item.raw_data.internal_guide, image_url: image });
+                        }
+                    });
                 }
             }
         });
-    } else {
+    }
+
+    if (item.raw_data.state === 'entregada') {
         managePhoto({
             order_id: item.raw_data.id,
             internal_guide: item.raw_data.internal_guide,
-            state: item.raw_data.state,
+            next_state: 'entregada',
             callback: function(response){
                 if (response === true) {
                     item.raw_data.state = 'entregada';
@@ -221,6 +236,13 @@ $.listView.addEventListener('itemclick', function(evt) {
                 item.order_state.backgroundColor = getStateColor(item.raw_data.state);
                 section.updateItemAt(itemIndex, item);
             }
+        });
+    }
+
+    if (item.raw_data.state === 'devolucion') {
+        require('dialogs').openDialog({
+            message: L('already_in_devolution'),
+            title: L('app_name')
         });
     }
 });

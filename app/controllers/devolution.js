@@ -11,7 +11,7 @@ var reasons = [
     "Translado Empresa",
     "Desorden Publico o Dificil Acceso",
     "Demolido",
-    "Reusado"
+    "Rehusado"
 ];
 
 Alloy.Globals.APP.androidBack($.DevolutionWindow,function(){
@@ -48,7 +48,8 @@ $.send.addEventListener('click', function() {
             data: {
                 devolution_reason: devolutionReasonNumber,
                 observation: observation,
-                delivery_order_internal_guide: params.internal_guide
+                delivery_order_internal_guide: params.internal_guide,
+                image_url: params.image_url
             },
             success: function(response) {
                 Alloy.Globals.LO.hide();

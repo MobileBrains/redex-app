@@ -28,4 +28,5 @@
   <string name="delivery_orders_empty">No se encontraron ordenes de entrega para el usuario actual.</string>
   <string name="logout">Cerrar Sesión</string>
   <string name="logout_confirmation">¿Estas seguro que deseas cerrar sesión?</string>
+  <string name="already_in_devolution">La orden ya se encuentra en estado devolución</string>
 </resources>
