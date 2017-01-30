@@ -59,6 +59,7 @@ var run = function() {
                         order_adderss        : { text: order.adderss },
                         order_state          : { backgroundColor: getStateColor(order.state) },
                         properties: {
+                            searchableText   : order.internal_guide,
                             touchEnabled     : false,
                             accessoryType    : Ti.UI.LIST_ACCESSORY_TYPE_NONE,
                             height           : '95dip'
@@ -68,6 +69,7 @@ var run = function() {
                     dataItems.push(dataItem);
                 });
 
+                $.listSearch.hintText = 'Guia Interna';
                 $.listSection.setItems(dataItems);
                 $.listView.show();
             }
