@@ -11,7 +11,7 @@ var reasons = [
     "Translado Empresa",
     "Desorden Publico o Dificil Acceso",
     "Demolido",
-    "Reusado"
+    "Rehusado"
 ];
 
 Alloy.Globals.APP.androidBack($.DevolutionWindow,function(){
@@ -34,8 +34,6 @@ _.each(reasons, function(reason) {
     var row = Ti.UI.createPickerRow({ title: reason });
     $.devolutionReasonColumn.addRow(row);
 });
-
-console.error("params:    ", params);
 
 $.send.addEventListener('click', function() {
     if (devolutionReasonNumber !== -1 && devolutionReasonNumber !== null && devolutionReasonNumber !== undefined) {

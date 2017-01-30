@@ -116,14 +116,15 @@ var manageDeliver = function(args){
 var managePhoto = function(args){
     require('photo_uploader').takePhoto({
         cancel: function(){
-            console.error("----------------------cancel")
-            if (args.state !== 'entregada') {
+            if (args.next_state === 'entregada') {
                 manageDeliver({
                     internal_guide: args.internal_guide,
                     callback: function(response){
                         args.callback(response);
                     }
                 });
+            } else if (args.next_state === 'devolucion') {
+                args.callback(false)
             }
         },
         beforeUpload: function(){
@@ -133,7 +134,7 @@ var managePhoto = function(args){
             Alloy.Globals.LO.hide();
             Ti.API.debug('success cloudinaryResponse: ', JSON.stringify(cloudinaryResponse));
 
-            if (args.state === 'pendiente') {
+            if (args.next_state === 'entregada') {
                 require('http').request({
                     timeout: 10000,
                     type: 'POST',
@@ -160,7 +161,7 @@ var managePhoto = function(args){
                         args.callback(false);
                     }
                 });
-            } else if (args.state === 'devolucion') {
+            } else if (args.next_state === 'devolucion') {
                 args.callback(cloudinaryResponse.url);
             }
         },
@@ -186,8 +187,6 @@ $.listView.addEventListener('itemclick', function(evt) {
     var section = evt.section;
     var itemIndex = evt.itemIndex;
 
-    Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
-
     if (item.raw_data.state === 'pendiente') {
         require('dialogs').openOptionsDialog({
             options: {
@@ -200,7 +199,7 @@ $.listView.addEventListener('itemclick', function(evt) {
                     managePhoto({
                         order_id: item.raw_data.id,
                         internal_guide: item.raw_data.internal_guide,
-                        state: item.raw_data.state,
+                        next_state: 'entregada',
                         callback: function(response){
                             if (response === true) {
                                 item.raw_data.state = 'entregada';
@@ -213,12 +212,11 @@ $.listView.addEventListener('itemclick', function(evt) {
                     managePhoto({
                         order_id: item.raw_data.id,
                         internal_guide: item.raw_data.internal_guide,
-                        state: item.raw_data.state,
+                        next_state: 'devolucion',
                         callback: function(response){
-                            console.error("callbackFun   ", response);
-                            if (response !== null) {
-                                manageDevolution({ internal_guide: item.raw_data.internal_guide, image_url: response });
-                            }
+                            image = (response !== true && response !== false) ? response : null
+                            Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
+                            manageDevolution({ internal_guide: item.raw_data.internal_guide, image_url: image });
                         }
                     });
                 }
@@ -230,7 +228,7 @@ $.listView.addEventListener('itemclick', function(evt) {
         managePhoto({
             order_id: item.raw_data.id,
             internal_guide: item.raw_data.internal_guide,
-            state: item.raw_data.state,
+            next_state: 'entregada',
             callback: function(response){
                 if (response === true) {
                     item.raw_data.state = 'entregada';
@@ -249,15 +247,11 @@ $.listView.addEventListener('itemclick', function(evt) {
     }
 });
 
-// TODO: Validate if a devolution was done success and validate when focus and deliver order
 $.HomeWindow.addEventListener('focus', function(){
-    console.error("focus");
     var current_devolution_item_index = Ti.App.Properties.getObject('current_devolution_item_index', null);
     if (current_devolution_item_index !== null) {
-        console.error("focus 2");
         var item = $.listSection.getItemAt(current_devolution_item_index);
         if(item !== null) {
-            console.error("focus 3");
             item.raw_data.state = 'devolucion';
             item.order_state.backgroundColor = getStateColor(item.raw_data.state);
             $.listSection.updateItemAt(current_devolution_item_index, item);
