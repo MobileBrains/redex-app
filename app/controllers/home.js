@@ -218,7 +218,7 @@ $.listView.addEventListener('itemclick', function(evt) {
                         callback: function(response){
                             image = (response !== true && response !== false) ? response : null
                             Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
-                            manageDevolution({ internal_guide: item.raw_data.internal_guide, image_url: image });
+                            manageDevolution({ internal_guide: item.raw_data.internal_guide, order_id: item.raw_data.id, image_url: image });
                         }
                     });
                 }
