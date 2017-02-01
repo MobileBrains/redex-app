@@ -6,7 +6,7 @@ var reasons = [
     "Direccion Errada",
     "Permanece Cerrado",
     "Cliente no Conocido",
-    "Translado Persona",
+    "Traslado Persona",
     "Direccion Incompleta",
     "Translado Empresa",
     "Desorden Publico o Dificil Acceso",
