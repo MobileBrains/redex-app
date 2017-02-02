@@ -8,7 +8,7 @@ var reasons = [
     "Cliente no Conocido",
     "Traslado Persona",
     "Direccion Incompleta",
-    "Translado Empresa",
+    "Traslado Empresa",
     "Desorden Publico o Dificil Acceso",
     "Demolido",
     "Rehusado"
