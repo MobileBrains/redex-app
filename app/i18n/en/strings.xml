@@ -11,8 +11,12 @@
   <string name="send">Send</string>
   <string name="email">Email</string>
   <string name="pass">Password</string>
+  <string name="deliver">Deliver</string>
+  <string name="photo">Photo</string>
+  <string name="devolution">Devolution</string>
   <string name="uploading">Uploading...</string>
   <string name="loader_default">Loading...</string>
+  <string name="dialog_default">Select an option</string>
   <string name="photo_uploader_take_photo">Select a photo from camera or gallery.</string>
   <string name="photo_uploader_device_not_have_camera">Devise hasn't a camera.</string>
   <string name="photo_uploader_error_take">Error taking photo. Try again later.</string>s
@@ -24,4 +28,5 @@
   <string name="delivery_orders_empty">No delivery orders were found for the current user.</string>
   <string name="logout">Logout</string>
   <string name="logout_confirmation">Are you sure you want to logout?</string>
+  <string name="already_in_devolution">This order is already in devolution state</string>
 </resources>

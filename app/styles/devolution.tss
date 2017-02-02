@@ -1,0 +1,25 @@
+'#DevolutionWindow[platform: android]': {
+    exitOnClose: false,
+    windowSoftInputMode: Ti.UI.Android.SOFT_INPUT_ADJUST_RESIZE
+},
+
+'#devolutionReasonPicker': {
+    bottom: '10dip',
+    width: '90%',
+    height: '40dip',
+    borderRadius: 10,
+    borderColor: Alloy.Globals.colors.white
+},
+
+'#devolutionObservation': {
+    width: '90%',
+    height: '100dip',
+    borderRadius: 10,
+    textAlign: 'left',
+    color: Alloy.Globals.colors.black,
+    backgroundColor: Alloy.Globals.colors.white
+},
+
+'#send': {
+    title: L('send')
+}
