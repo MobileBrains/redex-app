@@ -59,6 +59,7 @@ var run = function() {
                         order_adderss        : { text: order.adderss },
                         order_state          : { backgroundColor: getStateColor(order.state) },
                         properties: {
+                            searchableText   : order.internal_guide,
                             touchEnabled     : false,
                             accessoryType    : Ti.UI.LIST_ACCESSORY_TYPE_NONE,
                             height           : '95dip'
@@ -68,6 +69,7 @@ var run = function() {
                     dataItems.push(dataItem);
                 });
 
+                $.listSearch.hintText = 'Guia Interna';
                 $.listSection.setItems(dataItems);
                 $.listView.show();
             }
@@ -216,7 +218,7 @@ $.listView.addEventListener('itemclick', function(evt) {
                         callback: function(response){
                             image = (response !== true && response !== false) ? response : null
                             Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
-                            manageDevolution({ internal_guide: item.raw_data.internal_guide, image_url: image });
+                            manageDevolution({ internal_guide: item.raw_data.internal_guide, order_id: item.raw_data.id, image_url: image });
                         }
                     });
                 }

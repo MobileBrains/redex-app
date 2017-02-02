@@ -20,6 +20,7 @@
                     </View>
                 </ItemTemplate>
             </Templates>
+            <SearchBar id="listSearch" platform="android"/>
             <ListSection id="listSection"/>
         </ListView>
     </Window>

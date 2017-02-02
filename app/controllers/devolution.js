@@ -6,7 +6,7 @@ var reasons = [
     "Direccion Errada",
     "Permanece Cerrado",
     "Cliente no Conocido",
-    "Translado Persona",
+    "Traslado Persona",
     "Direccion Incompleta",
     "Translado Empresa",
     "Desorden Publico o Dificil Acceso",
@@ -49,6 +49,7 @@ $.send.addEventListener('click', function() {
                 devolution_reason: devolutionReasonNumber,
                 observation: observation,
                 delivery_order_internal_guide: params.internal_guide,
+                delivery_order_id: params.order_id,
                 image_url: params.image_url
             },
             success: function(response) {
