@@ -3,6 +3,10 @@ require('oauth').appToken({ forceNew: false });
 
 Alloy.Globals.APP.init();
 
+require('gps_tracker').startTracking(function(response){
+    console.error("index:  ", response);
+});
+
 // redirect based on login
 require('oauth').validateToken({
     success: function() {
