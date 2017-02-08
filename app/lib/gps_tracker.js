@@ -12,7 +12,7 @@ function requestLocationPermissions(authorizationType, callback) {
     });
   }
 
-  Ti.Geolocation.requestLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS, function(e) {
+  Ti.Geolocation.requestLocationPermissions(authorizationType, function(e) {
     if (!e.success) {
       return callback({
         success: false,
@@ -25,6 +25,8 @@ function requestLocationPermissions(authorizationType, callback) {
     });
   });
 }
+
+exports.requestLocationPermissions = requestLocationPermissions;
 
 function isTracking() {
   return tracking;
@@ -39,7 +41,6 @@ function toggleTracking(callback) {
 }
 
 function startTracking(callback) {
-  console.error("oeeeeeeeee");
   if (isTracking()) {
     return callback({
       success: false,
@@ -47,20 +48,23 @@ function startTracking(callback) {
     });
   }
 
-  initMonitoring(function(e) {
-    if (!e.success) {
-      return callback(e);
+  initMonitoring({
+    authorizationType: Ti.Geolocation.AUTHORIZATION_ALWAYS,
+    callback: function(e) {
+      if (!e.success) {
+        return callback(e);
+      }
+
+      tracking = true;
+
+      Ti.Geolocation.addEventListener('location', onLocation);
+
+      callback({
+        success: true
+      });
+
+      console.error('GPS START');
     }
-
-    tracking = true;
-
-    Ti.Geolocation.addEventListener('location', onLocation);
-
-    callback({
-      success: true
-    });
-
-    console.error("GPS START");
   });
 }
 
@@ -82,15 +86,13 @@ function stopTracking(callback) {
     success: true
   });
 
-  console.error("GPS STOP");
+  console.error('GPS STOP');
 }
 
 exports.stopTracking = stopTracking;
 
-function initMonitoring(callback) {
-
-  requestLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS, function(e) {
-
+function initMonitoring(args) {
+  requestLocationPermissions(args.authorizationType, function(e) {
     if (e.success && !configuredMonitoring) {
       Ti.Geolocation.Android.addLocationProvider(Ti.Geolocation.Android.createLocationProvider({
         name: Ti.Geolocation.PROVIDER_GPS,
@@ -108,32 +110,28 @@ function initMonitoring(callback) {
       configuredMonitoring = true;
     }
 
-    return callback(e);
+    console.error("initMonitoring 3");
+
+    return args.callback(e);
   });
 }
 
 function onLocation(e) {
-
   if (!e.error) {
-    var coords = e.coords;
-
-    var data = {};
-
-    if (coords.altitudeAccuracy !== null) {
-      data.altitudeAccuracy = coords.altitudeAccuracy;
-      data.altitude = coords.altitude;
-    }
-
-    ['heading', 'speed'].forEach(function(key) {
-      if (coords[key] !== -1) {
-        data[key] = coords[key];
-      }
-    });
-
-    ['altitude', 'latitude', 'longitude', 'timestamp'].forEach(function(key) {
-      data[key] = coords[key];
-    });
-
-    console.error("GPS DATA: ", data);
+    console.error('GPS DATA: ', e);
+  } else {
+    console.error('GPS ERROR: ', e);
   }
 }
+
+function getCurrentPosition(callback) {
+  requestLocationPermissions(Ti.Geolocation.AUTHORIZATION_WHEN_IN_USE, function(e) {
+    if (e.success){
+      Ti.Geolocation.getCurrentPosition(callback);
+    } else {
+      callback(e);
+    }
+  });
+}
+
+exports.getCurrentPosition = getCurrentPosition;

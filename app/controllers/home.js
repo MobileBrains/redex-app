@@ -2,34 +2,46 @@ if ( OS_ANDROID ) {
     require('android_actionbar').build({
         window: $.HomeWindow,
         displayHomeAsUp: false,
-        menuItems: [{
-            id: 101,
-            title: L('logout'),
-            icon: 'images/logout.png',
-            callback: function(){
-                require('dialogs').openOptionsDialog({
-                    options: {
-                        buttonNames: [L('accept')],
-                        message: L('logout_confirmation'),
-                        title: L('app_name')
-                    },
-                    callback: function(evt){
-                        if (evt.index !== evt.source.cancel) {
-                            Alloy.Globals.LO.show(L('loader_default'), false);
-                            require('session').logout({
-                                success: function(){
-                                    Alloy.Globals.LO.hide();
-                                    Alloy.Globals.APP.navigatorOpen('login', { navigationWindow: false });
-                                },
-                                error: function(){
-                                    Alloy.Globals.LO.hide();
-                                }
-                            });
+        // menuItemsBehavior: Ti.Android.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW,
+        menuItems: [
+            {
+                id: 101,
+                title: 'Actualizar ubicacion', // L('update_gps')
+                icon: Ti.Android.R.drawable.ic_menu_mylocation,
+                callback: function(){
+                    updateLocation();
+                }
+            },
+            {
+                id: 102,
+                title: L('logout'),
+                icon: Ti.Android.R.drawable.ic_menu_more,//ic_menu_delete,//ic_delete,//ic_menu_close_clear_cancel,
+                // icon: 'images/logout.png',
+                callback: function(){
+                    require('dialogs').openOptionsDialog({
+                        options: {
+                            buttonNames: [L('accept')],
+                            message: L('logout_confirmation'),
+                            title: L('app_name')
+                        },
+                        callback: function(evt){
+                            if (evt.index !== evt.source.cancel) {
+                                Alloy.Globals.LO.show(L('loader_default'), false);
+                                require('session').logout({
+                                    success: function(){
+                                        Alloy.Globals.LO.hide();
+                                        Alloy.Globals.APP.navigatorOpen('login', { navigationWindow: false });
+                                    },
+                                    error: function(){
+                                        Alloy.Globals.LO.hide();
+                                    }
+                                });
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
-        }]
+        ]
     });
 }
 
@@ -93,24 +105,79 @@ var getStateColor = function (state){
     return color;
 };
 
+var updateLocation = function(){
+    Alloy.Globals.LO.show(L('loader_default'), false);
+    require('gps_tracker').getCurrentPosition(function(e){
+        console.error("GPS DATA: ", e);
+        if (!e.error) {
+            require('http').request({
+                timeout: 10000,
+                type: 'POST',
+                format: 'JSON',
+                oauth_type: 'userToken',
+                data: {
+                    longitude: e.coords.longitude,
+                    latitude: e.coords.latitude
+                },
+                url: Alloy.Globals.Secrets.backend.url + '/api/v1/users/updateLocation',
+                success: function(response) {
+                    console.error("updateLocation response success: ", response);
+                    Alloy.Globals.LO.hide();
+                    require('dialogs').openDialog({
+                        message: 'Ubicacion actualizada con exito',//L('gps_update_success'),
+                        title: L('success')
+                    });
+                },
+                failure: function(response) {
+                    console.error("updateLocation response error: ", response);
+                    Alloy.Globals.LO.hide();
+                    require('dialogs').openDialog({
+                        message: 'Error al actualizar la ubicacion intenta de nuevo',//L('gps_update_error'),
+                        title: L('error')
+                    });
+                }
+            });
+        } else {
+            Alloy.Globals.LO.hide();
+            require('dialogs').openDialog({
+                message: e.error,
+                title: L('error')
+            });
+        }
+    });
+};
+
 var manageDeliver = function(args){
     Alloy.Globals.LO.show(L('loader_default'), false);
-    require('http').request({
-        timeout: 10000,
-        type: 'POST',
-        format: 'JSON',
-        url: Alloy.Globals.Secrets.backend.url + '/api/v1/delivery_orders/delivered',
-        oauth_type: 'userToken',
-        data: {
-            delivery_order_internal_guide: args.internal_guide
-        },
-        success: function(response) {
+    require('gps_tracker').getCurrentPosition(function(e){
+        console.error("GPS DATA: ", e);
+        if (!e.error) {
+            require('http').request({
+                timeout: 10000,
+                type: 'POST',
+                format: 'JSON',
+                url: Alloy.Globals.Secrets.backend.url + '/api/v1/delivery_orders/delivered',
+                oauth_type: 'userToken',
+                data: {
+                    delivery_order_internal_guide: args.internal_guide,
+                    longitude: e.coords.longitude,
+                    latitude: e.coords.latitude
+                },
+                success: function(response) {
+                    Alloy.Globals.LO.hide();
+                    args.callback(true);
+                },
+                failure: function(response) {
+                    Alloy.Globals.LO.hide();
+                    args.callback(false);
+                }
+            });
+        } else {
             Alloy.Globals.LO.hide();
-            args.callback(true);
-        },
-        failure: function(response) {
-            Alloy.Globals.LO.hide();
-            args.callback(false);
+            require('dialogs').openDialog({
+                message: e.error,
+                title: L('error')
+            });
         }
     });
 };
