@@ -12,7 +12,7 @@
                         <View id="left">
                             <Label id="order_internal_guide" bindId="order_internal_guide"/>
                             <Label id="order_destinatary" bindId="order_destinatary"/>
-                            <Label id="order_adderss" bindId="order_adderss"/>
+                            <Label id="order_address" bindId="order_address"/>
                         </View>
                         <View id="right">
                             <Label id="order_state" bindId="order_state"/>

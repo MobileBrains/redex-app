@@ -37,7 +37,7 @@
     }
 },
 
-'#order_adderss': {
+'#order_address': {
     top: '4dip',
     left: '20dip',
     color: Alloy.Globals.colors.white,

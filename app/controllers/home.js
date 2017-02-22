@@ -68,7 +68,7 @@ var run = function() {
                         raw_data: order,
                         order_internal_guide : { text: 'Guia Interna: ' + order.internal_guide },
                         order_destinatary    : { text: order.destinatary },
-                        order_adderss        : { text: order.adderss },
+                        order_address        : { text: order.address },
                         order_state          : { backgroundColor: getStateColor(order.state) },
                         properties: {
                             searchableText   : order.internal_guide,
