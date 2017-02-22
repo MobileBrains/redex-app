@@ -64,6 +64,9 @@
         <activity android:name="ti.modules.titanium.ui.android.TiPreferencesActivity" android:screenOrientation="portrait" android:configChanges="screenSize"/>
       </application>
     </manifest>
+    <services>
+      <service url='gps_job.js' type='interval'/>
+    </services>
   </android>
   <modules>
     <module platform="iphone" version="0.5.3">com.sideshowcoder.jpgcompressor</module>

@@ -47,6 +47,7 @@ if ( OS_ANDROID ) {
 
 var run = function() {
     Alloy.Globals.LO.show(L('loader_default'), false);
+    require('gps_service').init();
     require('http').request({
         timeout: 10000,
         type: 'POST',
@@ -117,7 +118,8 @@ var updateLocation = function(){
                 oauth_type: 'userToken',
                 data: {
                     longitude: e.coords.longitude,
-                    latitude: e.coords.latitude
+                    latitude: e.coords.latitude,
+                    location_type: 0
                 },
                 url: Alloy.Globals.Secrets.backend.url + '/api/v1/users/updateLocation',
                 success: function(response) {
