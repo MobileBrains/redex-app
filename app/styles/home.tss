@@ -11,6 +11,20 @@
 },
 
 '#left':{
+    width: '5%',
+    height: Ti.UI.SIZE,
+    layout: 'vertical'
+},
+
+'#order_serial': {
+    color: Alloy.Globals.colors.white,
+    font: {
+        fontSize: '15dip',
+        fontFamily: 'DroidSans'
+    }
+},
+
+'#middle':{
     left: '0dip',
     width: '80%',
     height: Ti.UI.FILL,
@@ -19,7 +33,7 @@
 
 '#order_internal_guide': {
     top: '8dip',
-    left: '20dip',
+    left: '10dip',
     color: Alloy.Globals.colors.white,
     font: {
         fontSize: '15dip',
@@ -29,7 +43,7 @@
 
 '#order_destinatary': {
     top: '4dip',
-    left: '20dip',
+    left: '10dip',
     color: Alloy.Globals.colors.white,
     font: {
         fontSize: '12dip',
@@ -39,7 +53,7 @@
 
 '#order_address': {
     top: '4dip',
-    left: '20dip',
+    left: '10dip',
     color: Alloy.Globals.colors.white,
     font: {
         fontSize: '12dip',
@@ -48,13 +62,13 @@
 },
 
 '#right':{
-    width: '20%',
+    width: '15%',
     height: Ti.UI.SIZE,
     layout: 'horizontal'
 },
 
 '#order_state': {
-    left: '20dip',
+    left: '10dip',
     width: '23dip',
     height: '23dip',
     borderRadius: '15dip'

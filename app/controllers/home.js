@@ -64,9 +64,10 @@ var run = function() {
                     message: L('delivery_orders_empty')
                 });
             } else {
-                _.each(response.delivery_orders, function(order) {
+                _.each(response.delivery_orders, function(order, i) {
                     var dataItem = {
                         raw_data: order,
+                        order_serial         : { text: i+1 },
                         order_internal_guide : { text: 'Guia Interna: ' + order.internal_guide },
                         order_destinatary    : { text: order.destinatary },
                         order_address        : { text: order.address },
