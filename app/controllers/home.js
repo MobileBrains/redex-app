@@ -9,7 +9,12 @@ if ( OS_ANDROID ) {
                 title: 'Actualizar ubicacion', // L('update_gps')
                 icon: Ti.Android.R.drawable.ic_menu_mylocation,
                 callback: function(){
-                    updateLocation();
+                    managePhoto({
+                        next_state: 'gps',
+                        callback: function(response){
+                            updateLocation({ image: response.image });
+                        }
+                    });
                 }
             },
             {
@@ -107,7 +112,7 @@ var getStateColor = function (state){
     return color;
 };
 
-var updateLocation = function(){
+var updateLocation = function(args){
     Alloy.Globals.LO.show(L('loader_default'), false);
     require('gps_tracker').getCurrentPosition(function(e){
         console.error("GPS DATA: ", e);
@@ -120,6 +125,7 @@ var updateLocation = function(){
                 data: {
                     longitude: e.coords.longitude,
                     latitude: e.coords.latitude,
+                    image_url: args.image,
                     location_type: 0
                 },
                 url: Alloy.Globals.Secrets.backend.url + '/api/v1/users/updateLocation',
@@ -181,6 +187,7 @@ var manageDeliver = function(args){
                 message: e.error,
                 title: L('error')
             });
+            args.callback(false);
         }
     });
 };
@@ -192,11 +199,11 @@ var managePhoto = function(args){
                 manageDeliver({
                     internal_guide: args.internal_guide,
                     callback: function(response){
-                        args.callback(response);
+                        args.callback({ status: response });
                     }
                 });
-            } else if (args.next_state === 'devolucion') {
-                args.callback(false)
+            } else if (args.next_state === 'devolucion' || args.next_state === 'gps') {
+                args.callback({ status: false });
             }
         },
         beforeUpload: function(){
@@ -223,18 +230,18 @@ var managePhoto = function(args){
                             title: L('success')
                         });
 
-                        args.callback(true);
+                        args.callback({ status: true });
                     },
                     failure: function(response) {
                         require('dialogs').openDialog({
                             message: L('photo_uploader_error_upload'),
                             title: L('error')
                         });
-                        args.callback(false);
+                        args.callback({ status: false });
                     }
                 });
-            } else if (args.next_state === 'devolucion') {
-                args.callback(cloudinaryResponse.url);
+            } else if (args.next_state === 'devolucion' || args.next_state === 'gps') {
+                args.callback({ status: true, image: cloudinaryResponse.url });
             }
         },
         error: function(response){
@@ -244,7 +251,7 @@ var managePhoto = function(args){
                 message: L('photo_uploader_error_upload'),
                 title: L('error')
             });
-            args.callback(false);
+            args.callback({ status: false });
         }
     })();
 };
@@ -273,7 +280,7 @@ $.listView.addEventListener('itemclick', function(evt) {
                         internal_guide: item.raw_data.internal_guide,
                         next_state: 'entregada',
                         callback: function(response){
-                            if (response === true) {
+                            if (response.status === true) {
                                 item.raw_data.state = 'entregada';
                             }
                             item.order_state.backgroundColor = getStateColor(item.raw_data.state);
@@ -286,9 +293,10 @@ $.listView.addEventListener('itemclick', function(evt) {
                         internal_guide: item.raw_data.internal_guide,
                         next_state: 'devolucion',
                         callback: function(response){
-                            image = (response !== true && response !== false) ? response : null
-                            Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
-                            manageDevolution({ internal_guide: item.raw_data.internal_guide, order_id: item.raw_data.id, image_url: image });
+                            if (response.status === true) {
+                                Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
+                                manageDevolution({ internal_guide: item.raw_data.internal_guide, order_id: item.raw_data.id, image_url: response.image });
+                            }
                         }
                     });
                 }
@@ -302,7 +310,7 @@ $.listView.addEventListener('itemclick', function(evt) {
             internal_guide: item.raw_data.internal_guide,
             next_state: 'entregada',
             callback: function(response){
-                if (response === true) {
+                if (response.status === true) {
                     item.raw_data.state = 'entregada';
                 }
                 item.order_state.backgroundColor = getStateColor(item.raw_data.state);
