@@ -288,14 +288,12 @@ $.listView.addEventListener('itemclick', function(evt) {
                         }
                     });
                 } else if(evt.index === 1) {
-                    managePhoto({
-                        order_id: item.raw_data.id,
+                    manageDevolution({
                         internal_guide: item.raw_data.internal_guide,
-                        next_state: 'devolucion',
+                        order_id: item.raw_data.id,
                         callback: function(response){
                             if (response.status === true) {
                                 Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
-                                manageDevolution({ internal_guide: item.raw_data.internal_guide, order_id: item.raw_data.id, image_url: response.image });
                             }
                         }
                     });

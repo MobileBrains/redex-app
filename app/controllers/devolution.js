@@ -35,36 +35,68 @@ _.each(reasons, function(reason) {
     $.devolutionReasonColumn.addRow(row);
 });
 
+var managePhoto = function(args){
+    require('photo_uploader').takePhoto({
+        cancel: function(){
+            args.callback({ status: false });
+        },
+        beforeUpload: function(){
+            Alloy.Globals.LO.show(L('uploading'), false);
+        },
+        success: function(cloudinaryResponse){
+            Alloy.Globals.LO.hide();
+            Ti.API.debug('success cloudinaryResponse: ', JSON.stringify(cloudinaryResponse));
+            args.callback({ status: true, image: cloudinaryResponse.url });
+        },
+        error: function(response){
+            Alloy.Globals.LO.hide();
+            Ti.API.debug('error response: ', response);
+            require('dialogs').openDialog({
+                message: L('photo_uploader_error_upload'),
+                title: L('error')
+            });
+            args.callback({ status: false });
+        }
+    })();
+};
+
 $.send.addEventListener('click', function() {
     if (devolutionReasonNumber !== -1 && devolutionReasonNumber !== null && devolutionReasonNumber !== undefined) {
-        var observation = $.devolutionObservation.getValue();
-        Alloy.Globals.LO.show(L('loader_default'), false);
-        require('http').request({
-            timeout: 10000,
-            type: 'POST',
-            format: 'JSON',
-            url: Alloy.Globals.Secrets.backend.url + '/api/v1/devolutions',
-            oauth_type: 'userToken',
-            data: {
-                devolution_reason: devolutionReasonNumber,
-                observation: observation,
-                delivery_order_internal_guide: params.internal_guide,
-                delivery_order_id: params.order_id,
-                image_url: params.image_url
-            },
-            success: function(response) {
-                Alloy.Globals.LO.hide();
-                require('dialogs').openDialog({
-                    message: 'Devolucion registrada exitosamente.',
-                    title: L('success'),
-                    callback: function() { $.DevolutionWindow.close() }
-                });
-            },
-            failure: function(response) {
-                Alloy.Globals.LO.hide();
-                require('dialogs').openDialog({
-                    message: 'Error al registrar la devolucion',
-                    title: L('error')
+        managePhoto({
+            callback: function(response){
+                var observation = $.devolutionObservation.getValue();
+                Alloy.Globals.LO.show(L('loader_default'), false);
+                require('http').request({
+                    timeout: 10000,
+                    type: 'POST',
+                    format: 'JSON',
+                    url: Alloy.Globals.Secrets.backend.url + '/api/v1/devolutions',
+                    oauth_type: 'userToken',
+                    data: {
+                        devolution_reason: devolutionReasonNumber,
+                        observation: observation,
+                        delivery_order_internal_guide: params.internal_guide,
+                        delivery_order_id: params.order_id,
+                        image_url: response.image || ''
+                    },
+                    success: function(response) {
+                        Alloy.Globals.LO.hide();
+                        require('dialogs').openDialog({
+                            message: 'Devolucion registrada exitosamente.',
+                            title: L('success'),
+                            callback: function() {
+                                $.DevolutionWindow.close();
+                                params.callback({ status: true });
+                            }
+                        });
+                    },
+                    failure: function(response) {
+                        Alloy.Globals.LO.hide();
+                        require('dialogs').openDialog({
+                            message: 'Error al registrar la devolucion',
+                            title: L('error')
+                        });
+                    }
                 });
             }
         });
