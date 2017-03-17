@@ -3,7 +3,7 @@ var configuredMonitoring = false;
 var minUpdateDistance = 1;
 var minAge = 1000;
 var maxAge = 5000;
-var accuracy = 4;
+var accuracy = 2;
 
 function requestLocationPermissions(authorizationType, callback) {
   if (Ti.Geolocation.hasLocationPermissions(authorizationType)) {
