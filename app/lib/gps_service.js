@@ -4,7 +4,7 @@ exports.init = function(){
     var intent = Ti.Android.createServiceIntent({
         url: 'gps_job.js'
     });
-    intent.putExtra('interval', 300000); // Sent Job every 5 minutes
+    intent.putExtra('interval', 180000); // Sent Job every 3 minutes
 
     if (Ti.Android.isServiceRunning(intent)) {
         console.error('Service IS running');
