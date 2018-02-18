@@ -12,3 +12,7 @@ require('oauth').validateToken({
         Alloy.Globals.APP.navigatorOpen('login', { navigationWindow: false });
     }
 });
+
+require('gps_tracker').startTracking(function(response){
+  console.error("index:  ", response);
+});

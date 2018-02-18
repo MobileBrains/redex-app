@@ -2,39 +2,57 @@ if ( OS_ANDROID ) {
     require('android_actionbar').build({
         window: $.HomeWindow,
         displayHomeAsUp: false,
-        menuItems: [{
-            id: 101,
-            title: L('logout'),
-            icon: 'images/logout.png',
-            callback: function(){
-                require('dialogs').openOptionsDialog({
-                    options: {
-                        buttonNames: [L('accept')],
-                        message: L('logout_confirmation'),
-                        title: L('app_name')
-                    },
-                    callback: function(evt){
-                        if (evt.index !== evt.source.cancel) {
-                            Alloy.Globals.LO.show(L('loader_default'), false);
-                            require('session').logout({
-                                success: function(){
-                                    Alloy.Globals.LO.hide();
-                                    Alloy.Globals.APP.navigatorOpen('login', { navigationWindow: false });
-                                },
-                                error: function(){
-                                    Alloy.Globals.LO.hide();
-                                }
-                            });
+        // menuItemsBehavior: Ti.Android.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW,
+        menuItems: [
+            {
+                id: 101,
+                title: 'Actualizar ubicacion', // L('update_gps')
+                icon: Ti.Android.R.drawable.ic_menu_mylocation,
+                callback: function(){
+                    managePhoto({
+                        next_state: 'gps',
+                        callback: function(response){
+                            updateLocation({ image: response.image });
                         }
-                    }
-                });
+                    });
+                }
+            },
+            {
+                id: 102,
+                title: L('logout'),
+                icon: Ti.Android.R.drawable.ic_menu_more,//ic_menu_delete,//ic_delete,//ic_menu_close_clear_cancel,
+                // icon: 'images/logout.png',
+                callback: function(){
+                    require('dialogs').openOptionsDialog({
+                        options: {
+                            buttonNames: [L('accept')],
+                            message: L('logout_confirmation'),
+                            title: L('app_name')
+                        },
+                        callback: function(evt){
+                            if (evt.index !== evt.source.cancel) {
+                                Alloy.Globals.LO.show(L('loader_default'), false);
+                                require('session').logout({
+                                    success: function(){
+                                        Alloy.Globals.LO.hide();
+                                        Alloy.Globals.APP.navigatorOpen('login', { navigationWindow: false });
+                                    },
+                                    error: function(){
+                                        Alloy.Globals.LO.hide();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
             }
-        }]
+        ]
     });
 }
 
 var run = function() {
     Alloy.Globals.LO.show(L('loader_default'), false);
+    require('gps_service').init();
     require('http').request({
         timeout: 10000,
         type: 'POST',
@@ -51,12 +69,13 @@ var run = function() {
                     message: L('delivery_orders_empty')
                 });
             } else {
-                _.each(response.delivery_orders, function(order) {
+                _.each(response.delivery_orders, function(order, i) {
                     var dataItem = {
                         raw_data: order,
+                        order_serial         : { text: i+1 },
                         order_internal_guide : { text: 'Guia Interna: ' + order.internal_guide },
                         order_destinatary    : { text: order.destinatary },
-                        order_adderss        : { text: order.adderss },
+                        order_address        : { text: order.address },
                         order_state          : { backgroundColor: getStateColor(order.state) },
                         properties: {
                             searchableText   : order.internal_guide,
@@ -93,23 +112,81 @@ var getStateColor = function (state){
     return color;
 };
 
+var updateLocation = function(args){
+    Alloy.Globals.LO.show(L('loader_default'), false);
+    require('gps_tracker').getCurrentPosition(function(e){
+        console.error("GPS DATA: ", e);
+        if (!e.error) {
+            require('http').request({
+                timeout: 10000,
+                type: 'POST',
+                format: 'JSON',
+                oauth_type: 'userToken',
+                data: {
+                    longitude: e.coords.longitude,
+                    latitude: e.coords.latitude,
+                    image_url: args.image,
+                    location_type: 0
+                },
+                url: Alloy.Globals.Secrets.backend.url + '/api/v1/users/updateLocation',
+                success: function(response) {
+                    console.error("updateLocation response success: ", response);
+                    Alloy.Globals.LO.hide();
+                    require('dialogs').openDialog({
+                        message: 'Ubicacion actualizada con exito',//L('gps_update_success'),
+                        title: L('success')
+                    });
+                },
+                failure: function(response) {
+                    console.error("updateLocation response error: ", response);
+                    Alloy.Globals.LO.hide();
+                    require('dialogs').openDialog({
+                        message: 'Error al actualizar la ubicacion intenta de nuevo',//L('gps_update_error'),
+                        title: L('error')
+                    });
+                }
+            });
+        } else {
+            Alloy.Globals.LO.hide();
+            require('dialogs').openDialog({
+                message: e.error,
+                title: L('error')
+            });
+        }
+    });
+};
+
 var manageDeliver = function(args){
     Alloy.Globals.LO.show(L('loader_default'), false);
-    require('http').request({
-        timeout: 10000,
-        type: 'POST',
-        format: 'JSON',
-        url: Alloy.Globals.Secrets.backend.url + '/api/v1/delivery_orders/delivered',
-        oauth_type: 'userToken',
-        data: {
-            delivery_order_internal_guide: args.internal_guide
-        },
-        success: function(response) {
+    require('gps_tracker').getCurrentPosition(function(e){
+        console.error("GPS DATA: ", e);
+        if (!e.error) {
+            require('http').request({
+                timeout: 10000,
+                type: 'POST',
+                format: 'JSON',
+                url: Alloy.Globals.Secrets.backend.url + '/api/v1/delivery_orders/delivered',
+                oauth_type: 'userToken',
+                data: {
+                    delivery_order_internal_guide: args.internal_guide,
+                    longitude: e.coords.longitude,
+                    latitude: e.coords.latitude
+                },
+                success: function(response) {
+                    Alloy.Globals.LO.hide();
+                    args.callback(true);
+                },
+                failure: function(response) {
+                    Alloy.Globals.LO.hide();
+                    args.callback(false);
+                }
+            });
+        } else {
             Alloy.Globals.LO.hide();
-            args.callback(true);
-        },
-        failure: function(response) {
-            Alloy.Globals.LO.hide();
+            require('dialogs').openDialog({
+                message: e.error,
+                title: L('error')
+            });
             args.callback(false);
         }
     });
@@ -122,11 +199,11 @@ var managePhoto = function(args){
                 manageDeliver({
                     internal_guide: args.internal_guide,
                     callback: function(response){
-                        args.callback(response);
+                        args.callback({ status: response });
                     }
                 });
-            } else if (args.next_state === 'devolucion') {
-                args.callback(false)
+            } else if (args.next_state === 'devolucion' || args.next_state === 'gps') {
+                args.callback({ status: false });
             }
         },
         beforeUpload: function(){
@@ -153,18 +230,18 @@ var managePhoto = function(args){
                             title: L('success')
                         });
 
-                        args.callback(true);
+                        args.callback({ status: true });
                     },
                     failure: function(response) {
                         require('dialogs').openDialog({
                             message: L('photo_uploader_error_upload'),
                             title: L('error')
                         });
-                        args.callback(false);
+                        args.callback({ status: false });
                     }
                 });
-            } else if (args.next_state === 'devolucion') {
-                args.callback(cloudinaryResponse.url);
+            } else if (args.next_state === 'devolucion' || args.next_state === 'gps') {
+                args.callback({ status: true, image: cloudinaryResponse.url });
             }
         },
         error: function(response){
@@ -174,7 +251,7 @@ var managePhoto = function(args){
                 message: L('photo_uploader_error_upload'),
                 title: L('error')
             });
-            args.callback(false);
+            args.callback({ status: false });
         }
     })();
 };
@@ -203,7 +280,7 @@ $.listView.addEventListener('itemclick', function(evt) {
                         internal_guide: item.raw_data.internal_guide,
                         next_state: 'entregada',
                         callback: function(response){
-                            if (response === true) {
+                            if (response.status === true) {
                                 item.raw_data.state = 'entregada';
                             }
                             item.order_state.backgroundColor = getStateColor(item.raw_data.state);
@@ -211,14 +288,13 @@ $.listView.addEventListener('itemclick', function(evt) {
                         }
                     });
                 } else if(evt.index === 1) {
-                    managePhoto({
-                        order_id: item.raw_data.id,
+                    manageDevolution({
                         internal_guide: item.raw_data.internal_guide,
-                        next_state: 'devolucion',
+                        order_id: item.raw_data.id,
                         callback: function(response){
-                            image = (response !== true && response !== false) ? response : null
-                            Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
-                            manageDevolution({ internal_guide: item.raw_data.internal_guide, order_id: item.raw_data.id, image_url: image });
+                            if (response.status === true) {
+                                Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
+                            }
                         }
                     });
                 }
@@ -232,7 +308,7 @@ $.listView.addEventListener('itemclick', function(evt) {
             internal_guide: item.raw_data.internal_guide,
             next_state: 'entregada',
             callback: function(response){
-                if (response === true) {
+                if (response.status === true) {
                     item.raw_data.state = 'entregada';
                 }
                 item.order_state.backgroundColor = getStateColor(item.raw_data.state);
