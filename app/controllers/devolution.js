@@ -14,10 +14,6 @@ var reasons = [
     "Rehusado"
 ];
 
-Alloy.Globals.APP.androidBack($.DevolutionWindow,function(){
-    $.DevolutionWindow.close();
-});
-
 if (OS_ANDROID) {
     $.devolutionReasonPicker.addEventListener('change', function(evt) {
         devolutionReason = evt.selectedValue[0];
