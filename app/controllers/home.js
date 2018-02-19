@@ -273,30 +273,32 @@ $.listView.addEventListener('itemclick', function(evt) {
                 message: L('dialog_default'),
                 title: L('app_name')
             },
-            callback: function(evt){
-                if (evt.index === 0) {
-                    managePhoto({
-                        order_id: item.raw_data.id,
-                        internal_guide: item.raw_data.internal_guide,
-                        next_state: 'entregada',
-                        callback: function(response){
-                            if (response.status === true) {
-                                item.raw_data.state = 'entregada';
+            callback: function(evt) {
+                if (evt.index !== evt.source.cancel) {
+                    if (evt.index === 0) {
+                        managePhoto({
+                            order_id: item.raw_data.id,
+                            internal_guide: item.raw_data.internal_guide,
+                            next_state: 'entregada',
+                            callback: function(response){
+                                if (response.status === true) {
+                                    item.raw_data.state = 'entregada';
+                                }
+                                item.order_state.backgroundColor = getStateColor(item.raw_data.state);
+                                section.updateItemAt(itemIndex, item);
                             }
-                            item.order_state.backgroundColor = getStateColor(item.raw_data.state);
-                            section.updateItemAt(itemIndex, item);
-                        }
-                    });
-                } else if(evt.index === 1) {
-                    manageDevolution({
-                        internal_guide: item.raw_data.internal_guide,
-                        order_id: item.raw_data.id,
-                        callback: function(response){
-                            if (response.status === true) {
-                                Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
+                        });
+                    } else if(evt.index === 1) {
+                        manageDevolution({
+                            internal_guide: item.raw_data.internal_guide,
+                            order_id: item.raw_data.id,
+                            callback: function(response){
+                                if (response.status === true) {
+                                    Ti.App.Properties.setObject('current_devolution_item_index', itemIndex);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
         });

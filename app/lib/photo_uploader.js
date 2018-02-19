@@ -85,11 +85,10 @@ exports.takePhoto = function(options) {
         require('dialogs').openOptionsDialog({
             options: {
                 buttonNames: [L('camera'), L('gallery')],
-                message: L('photo_uploader_take_photo'),
-                cancel: OS_IOS ? 0 : 2
+                message: L('photo_uploader_take_photo')
             },
             callback: function(e) {
-                if ( e.index === (OS_IOS ? 0 : 2)) { // return if cancelled
+                if (e.index === e.source.cancel) {
                     if ( options.cancel ) {
                         options.cancel();
                     }

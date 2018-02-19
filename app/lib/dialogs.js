@@ -41,14 +41,14 @@ var openOptionsDialog = function(args){
 
     if (!_.isUndefined(args.options.buttonNames)) {
         if (_.isUndefined(args.options.cancel)) {
-            _.extend(args.options, { cancel: OS_IOS ? 0 : 1 });
+            _.extend(args.options, { cancel: OS_IOS ? 0 : args.options.buttonNames.length });
         }
         args.options.buttonNames = OS_IOS ? _.union([L('cancel')], args.options.buttonNames) : _.union(args.options.buttonNames, [L('cancel')]);
     }
 
     dialog = Ti.UI.createAlertDialog(args.options);
 
-    if ( !_.isUndefined(args.callback)) {
+    if (!_.isUndefined(args.callback)) {
         addCallback(args.callback);
     }
 
